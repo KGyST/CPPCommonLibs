@@ -30,5 +30,8 @@
 	#define ACExtension
 #endif
 
+#if ACVER == 27
+#include	"RS.hpp"
+#endif
 
 #endif
