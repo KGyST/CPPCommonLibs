@@ -1,6 +1,7 @@
 #ifndef AC_27_H
 #define AC_27_H
 
+//#include	"ACAPI_MigrationHeader.hpp"
 
 inline GSErrCode ACAPI_Database(API_DatabaseID code, void* par1 = nullptr, void* par2 = nullptr, void* par3 = nullptr)
 {
@@ -103,6 +104,16 @@ inline GSErrCode ACAPI_LibPart_Search(API_LibPart* ancestor, bool createIfMissin
 inline GSErrCode ACAPI_LibPart_Get(API_LibPart* libPart)
 {
 	return ACAPI_LibraryPart_Get(libPart);
+}
+
+inline GSErrCode ACAPI_Install_PanelHandler(Int32 refCon, APIPanelCreateProc* handlerCreateProc, APIPanelDestroyProc* handlerDestroyProc)
+{
+	return ACAPI_AddOnIntegration_InstallPanelHandler(refCon, handlerCreateProc, handlerDestroyProc);
+}
+
+inline GSErrCode ACAPI_Register_InfoBoxPanel(Int32 refCon, const API_ElemType& tool, short stringId, short pageId, bool visibleByDefault = false)
+{
+	return ACAPI_AddOnIntegration_RegisterInfoBoxPanel(refCon, tool, stringId, pageId, visibleByDefault);
 }
 
 #endif
