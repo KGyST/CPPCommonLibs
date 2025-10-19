@@ -56,7 +56,7 @@ public:
 	Logger(const GS::UniString& i_companyName, const GS::UniString& i_appName);
 	void Log(const Logevent& i_logevent);
 	void Log(const GS::UniString& i_sLogText, 
-		const GSErrCode i_errCode, 
+		const GSErrCode i_errCode = NoError, 
 		const Loglevel i_logLevel = LogLev_DEBUG,
 		const GS::Guid* const i_guid = nullptr
 		);

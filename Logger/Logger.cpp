@@ -7,7 +7,8 @@
 
 
 Logger::Logger(const GS::UniString& i_compName, const GS::UniString& i_appName)
-	:m_regPath("SOFTWARE\\" + i_compName + "\\" + i_appName)
+	: m_regPath("SOFTWARE\\" + i_compName + "\\" + i_appName)
+	, m_loglevel(LogLev_DEBUG)
 {
 	GS::UniString fileName = i_appName + GetTimeStr("%Y%m%d_%H%M%S") + GS::UniString(".log");
 
