@@ -45,6 +45,7 @@ private:
 	GSErrCode OpenLogFileForWriting();
 	GSErrCode CloseLogFile();
 
+	// File I/O
 	GSErrCode AddToLogFile(const GS::UniString& i_logRow);
 	GSErrCode WrNewLine(void);
 	GSErrCode Write(Int32 nBytes, GSPtr data);
@@ -54,15 +55,26 @@ private:
 public:
 	~Logger();
 	Logger(const GS::UniString& i_companyName, const GS::UniString& i_appName);
+
 	void Log(const Logevent& i_logevent);
 	void Log(const GS::UniString& i_sLogText, 
 		const GSErrCode i_errCode = NoError, 
 		const Loglevel i_logLevel = LogLev_DEBUG,
 		const GS::Guid* const i_guid = nullptr
 		);
+	void Log(const GS::UniString& i_sLogText,
+		const Loglevel i_logLevel = LogLev_DEBUG,
+		const GSErrCode i_errCode = NoError,
+		const GS::Guid* const i_guid = nullptr
+	) {
+		return Log(i_sLogText, i_errCode, i_logLevel, i_guid);
+	}
+	
+	// Getters / Setters
+	inline short GetLoglevel() const { return (short)m_loglevel; };
 	inline void SetLoglevel(Loglevel i_loglevel) { m_loglevel = i_loglevel; };
 	inline void SetLoglevel(short i_loglevel) { m_loglevel = (Loglevel)i_loglevel; };
-	inline short GetLoglevel() const { return (short) m_loglevel ; };
+
 	GS::UniString GetLogFileFolderStr() const;
 	void SetLogFileFolder(IO::Location& i_loc, GS::UniString& i_fileName);
 };
