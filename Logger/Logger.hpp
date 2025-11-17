@@ -63,7 +63,7 @@ public:
 		const GS::Guid* const i_guid = nullptr
 		);
 	void Log(const GS::UniString& i_sLogText,
-		const Loglevel i_logLevel = LogLev_DEBUG,
+		const Loglevel i_logLevel,
 		const GSErrCode i_errCode = NoError,
 		const GS::Guid* const i_guid = nullptr
 	) {
