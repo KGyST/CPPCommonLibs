@@ -222,7 +222,7 @@ Logger::Logger(const GS::UniString& i_compName, const GS::UniString& i_appName)
 
 	if (sLogFolder.GetLength() > 0)
 	{
-		SetLogFileFolder(IO::Location(sLogFolder), fileName);
+		SetLogFileFolder( IO::Location(sLogFolder), fileName);
 	}
 	else
 	{
@@ -306,7 +306,7 @@ GS::UniString Logger::GetLogFileFolderStr() const
 	return (n);
 }
 
-void Logger::SetLogFileFolder(IO::Location& i_loc, GS::UniString& i_fileName)
+void Logger::SetLogFileFolder(const IO::Location& i_loc, GS::UniString& i_fileName)
 { 
 	m_pLogFileFolder = new IO::Location(i_loc);
 	m_logFileName = i_fileName;

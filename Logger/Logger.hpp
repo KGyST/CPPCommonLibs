@@ -14,14 +14,14 @@
 // TODO To be removed
 class Logevent 
 {
-	Loglevel		m_loglevel;
+	Loglevel			m_loglevel;
 	GS::UniString	m_sLogText;
 	GS::UniString	m_sDate;
 public:
 	Logevent(GS::UniString i_sLogText, Loglevel i_loglevel) :
 		m_sLogText	(i_sLogText),
 		m_loglevel	(i_loglevel),
-		m_sDate		(GetTimeStr()) {};
+		m_sDate		(GetTimeStr()) {}
 	const GS::UniString ToUniString() const;
 	Loglevel GetLogLevel() const { return m_loglevel; }
 };
@@ -71,15 +71,16 @@ public:
 	}
 	
 	// Getters / Setters
-	inline short GetLoglevel() const { return (short)m_loglevel; };
-	inline void SetLoglevel(Loglevel i_loglevel) { m_loglevel = i_loglevel; };
-	inline void SetLoglevel(short i_loglevel) { m_loglevel = (Loglevel)i_loglevel; };
+	short GetLoglevel() const { return (short)m_loglevel; };
+	void SetLoglevel(Loglevel i_loglevel) { m_loglevel = i_loglevel; };
+	void SetLoglevel(short i_loglevel) { m_loglevel = (Loglevel)i_loglevel; };
 
 	GS::UniString GetLogFileFolderStr() const;
-	void SetLogFileFolder(IO::Location& i_loc, GS::UniString& i_fileName);
+	void SetLogFileFolder(const IO::Location& i_loc, GS::UniString& i_fileName);
 };
 
 static std::mutex _loggerMutex;
+
 
 #endif //_LOGGER_HPP
 
