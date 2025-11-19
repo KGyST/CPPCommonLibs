@@ -14,14 +14,14 @@
 // TODO To be removed
 class Logevent 
 {
-	Loglevel		m_loglevel;
+	Loglevel			m_loglevel;
 	GS::UniString	m_sLogText;
 	GS::UniString	m_sDate;
 public:
 	Logevent(GS::UniString i_sLogText, Loglevel i_loglevel) :
 		m_sLogText	(i_sLogText),
 		m_loglevel	(i_loglevel),
-		m_sDate		(GetTimeStr()) {};
+		m_sDate		(GetTimeStr()) {}
 	const GS::UniString ToUniString() const;
 	Loglevel GetLogLevel() const { return m_loglevel; }
 };
@@ -45,6 +45,7 @@ private:
 	GSErrCode OpenLogFileForWriting();
 	GSErrCode CloseLogFile();
 
+	// File I/O
 	GSErrCode AddToLogFile(const GS::UniString& i_logRow);
 	GSErrCode WrNewLine(void);
 	GSErrCode Write(Int32 nBytes, GSPtr data);
@@ -54,20 +55,32 @@ private:
 public:
 	~Logger();
 	Logger(const GS::UniString& i_companyName, const GS::UniString& i_appName);
+
 	void Log(const Logevent& i_logevent);
 	void Log(const GS::UniString& i_sLogText, 
 		const GSErrCode i_errCode = NoError, 
 		const Loglevel i_logLevel = LogLev_DEBUG,
 		const GS::Guid* const i_guid = nullptr
 		);
-	inline void SetLoglevel(Loglevel i_loglevel) { m_loglevel = i_loglevel; };
-	inline void SetLoglevel(short i_loglevel) { m_loglevel = (Loglevel)i_loglevel; };
-	inline short GetLoglevel() const { return (short) m_loglevel ; };
+	void Log(const GS::UniString& i_sLogText,
+		const Loglevel i_logLevel,
+		const GSErrCode i_errCode = NoError,
+		const GS::Guid* const i_guid = nullptr
+	) {
+		return Log(i_sLogText, i_errCode, i_logLevel, i_guid);
+	}
+	
+	// Getters / Setters
+	short GetLoglevel() const { return (short)m_loglevel; };
+	void SetLoglevel(Loglevel i_loglevel) { m_loglevel = i_loglevel; };
+	void SetLoglevel(short i_loglevel) { m_loglevel = (Loglevel)i_loglevel; };
+
 	GS::UniString GetLogFileFolderStr() const;
-	void SetLogFileFolder(IO::Location& i_loc, GS::UniString& i_fileName);
+	void SetLogFileFolder(const IO::Location& i_loc, GS::UniString& i_fileName);
 };
 
 static std::mutex _loggerMutex;
+
 
 #endif //_LOGGER_HPP
 

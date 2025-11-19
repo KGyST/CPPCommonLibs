@@ -1,11 +1,11 @@
-#include	"Utils.hpp"
+#include	"Resource.hpp"
 
 
 // -----------------------------------------------------------------------------
 // Load a localisable Unicode string from resource
 // -----------------------------------------------------------------------------
 
-extern void		GetStringFromResource(GS::UniString* buffer, short resID, short stringID)
+void		GetStringFromResource(GS::UniString* buffer, short resID, short stringID)
 {
 	if (buffer != nullptr && !RSGetIndString(buffer, resID, stringID, ACAPI_GetOwnResModule()))
 		buffer->Clear();
@@ -13,7 +13,7 @@ extern void		GetStringFromResource(GS::UniString* buffer, short resID, short str
 	return;
 }
 
-extern GS::UniString GetStringFromResource_(short resID, short stringID)
+GS::UniString GetStringFromResource_(short resID, short stringID)
 {
 	GS::UniString *buffer = new GS::UniString;
 
@@ -25,7 +25,7 @@ extern GS::UniString GetStringFromResource_(short resID, short stringID)
 	return result;
 }
 
-extern GS::UniString GSFR(IntStr stringID)
+GS::UniString GSFR(IntStr stringID)
 {
 	GS::UniString _r = GetStringFromResource_(TABLE_DATA, (short)stringID);
 	auto _s = _r.ToCStr().Get();
