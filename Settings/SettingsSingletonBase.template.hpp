@@ -12,43 +12,37 @@
 #include	<mutex>
 #include	"Logger/Logger.hpp"
 #include	"Utils/Resource.hpp"
+#include  "../Src/PolygonReducer_Resource.h"
 
 
 template <class Derived>
 class SettingsSingletonBase
 {
-	static std::mutex _mutex;
-
 	SettingsSingletonBase(const SettingsSingletonBase&) = delete;
 	void operator=(const SettingsSingletonBase&) = delete;
 
 protected:
-	GS::UniString								m_appName;
-	GS::UniString								m_companyName;
-	Logger											m_logger;
+	GS::UniString							m_companyName;
+	GS::UniString							m_appName;
+	Logger										m_logger;
 
 	SettingsSingletonBase() = default;
-	SettingsSingletonBase(const GS::UniString& companyName, const GS::UniString& appName)
-		: m_companyName(companyName)
-		, m_appName(appName)
-		, m_logger(companyName, appName) {}
+	SettingsSingletonBase(GS::UniString i_companyName, GS::UniString i_appName)
+	: m_companyName(i_companyName)
+	, m_appName(i_appName)
+	, m_logger(m_companyName, m_appName) {};
 	~SettingsSingletonBase() = default;
 
 public:
 	static Derived& GetInstance() 
 	{
-		std::lock_guard<std::mutex> lock(_mutex);
-
 		static Derived singleton;
-
 		return singleton;
 	}
 
-	Logger& GetLogger() { return m_logger; };
+	Logger& GetLogger() { 
+		return m_logger; };
 };
-
-template <class Derived>
-std::mutex SettingsSingletonBase<Derived>::_mutex;
 
 
 #endif // !_SETTINGS_SINGLETON_TEMPLATE_HPP
