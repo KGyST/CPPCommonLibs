@@ -12,9 +12,7 @@
 
 #include	"StringsEnum.hpp"
 
-extern void		GetStringFromResource(GS::UniString* buffer, short resID, short stringID);
-extern GS::UniString	GetStringFromResource_(short resID, short stringID);
-extern GS::UniString GSFR(IntStr stringID);
+GS::UniString	GetStringFromResource(short resID, short stringID);
 
 #endif //RESOURCE_HPP
 
