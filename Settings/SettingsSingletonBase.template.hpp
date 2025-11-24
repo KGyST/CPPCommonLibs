@@ -32,6 +32,7 @@ protected:
 	, m_appName(i_appName)
 	, m_logger(m_companyName, m_appName) {};
 	~SettingsSingletonBase() = default;
+	GS::UniString GetRegPath() { return "SOFTWARE\\" + m_companyName + "\\" + m_appName;	}
 
 public:
 	static Derived& GetInstance() 

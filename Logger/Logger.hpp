@@ -35,12 +35,12 @@ public:
 		WithNewLine
 	};
 private:
-	IO::Location*		m_pLogFileFolder;
-	GS::UniString		m_logFileName;
-	GS::UniString		m_sLogFolder;
+	IO::Location*			m_pLogFileFolder;
+	GS::UniString			m_logFileName;
+	GS::UniString			m_sLogFolder;
 	mutable IO::File*	m_pLogFile;
-	Loglevel			m_loglevel;
-	GS::UniString		m_regPath;
+	Loglevel					m_loglevel;
+	GS::UniString			m_regPath;
 
 	GSErrCode OpenLogFileForWriting();
 	GSErrCode CloseLogFile();

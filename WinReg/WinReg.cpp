@@ -1,6 +1,6 @@
 #include	"WinReg.hpp"
 
-GS::UniString GetRegString(const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
 	char sBuffer[255];
 	DWORD iBuffer = 255;
@@ -21,9 +21,9 @@ GS::UniString GetRegString(const GS::UniString& i_key, const GS::UniString& i_pa
 	return GS::UniString(ws);
 }
 
-GS::UniString GetRegStringOrDefault(const GS::UniString& i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
+GS::UniString GetRegStringOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
 {
-	GS::UniString iResult = GetRegString(i_key, i_path, i_hKey, o_bufSize);
+	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, o_bufSize);
 
 	if (o_bufSize != NULL)
 		return iResult;
@@ -31,19 +31,19 @@ GS::UniString GetRegStringOrDefault(const GS::UniString& i_defaultValue, const G
 		return i_defaultValue;
 }
 
-GS::UniString GetRegStringOrSetDefault(const GS::UniString& i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* o_bufSize/* = NULL*/)
+GS::UniString GetRegStringOrSetDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* o_bufSize/* = NULL*/)
 {
-	GS::UniString iResult = GetRegString(i_key, i_path, i_hKey, o_bufSize);
+	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, o_bufSize);
 
 	if (o_bufSize != NULL)
 		return iResult;
 	else
-		SetRegString(i_defaultValue, i_key, i_path, i_hKey, o_bufSize);
+		SetRegString(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
 
 		return i_defaultValue;
 }
 
-UInt32 GetRegInt(const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
+UInt32 GetRegInt(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
 {
 	DWORD iBuffer = 0;
 	DWORD iBufferSize = 255;
@@ -62,9 +62,9 @@ UInt32 GetRegInt(const GS::UniString& i_key, const GS::UniString& i_path, HKEY i
 	return UInt16(iBuffer);
 }
 
-UInt32 GetRegIntOrDefault(const int i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+UInt32 GetRegIntOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
-	UInt32 iResult = GetRegInt(i_key, i_path, i_hKey, o_bufSize);
+	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, o_bufSize);
 
 	if (o_bufSize != NULL)
 		return iResult;
@@ -72,14 +72,14 @@ UInt32 GetRegIntOrDefault(const int i_defaultValue, const GS::UniString& i_key, 
 		return i_defaultValue;
 }
 
-UInt32 GetRegIntOrSetDefault(const int i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+UInt32 GetRegIntOrSetDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
-	UInt32 iResult = GetRegInt(i_key, i_path, i_hKey, o_bufSize);
+	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, o_bufSize);
 
 	if (o_bufSize != NULL)
 		return iResult;
 	else
-		SetRegInt(i_defaultValue, i_key, i_path, i_hKey, o_bufSize);
+		SetRegInt(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
 
 		return i_defaultValue;
 }
@@ -101,7 +101,7 @@ HKEY GetOrCreateRegPath(const GS::UniString& i_path, HKEY i_hKey = HKEY_CURRENT_
 	return hKey;
 }
 
-void SetRegString(const GS::UniString& i_val, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+void SetRegString(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_val, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
 	HKEY hKey = GetOrCreateRegPath(i_path, i_hKey);
 
@@ -125,7 +125,7 @@ void SetRegString(const GS::UniString& i_val, const GS::UniString& i_key, const 
 	status = RegCloseKey(hKey);
 }
 
-void SetRegInt(const UInt32 i_val, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+void SetRegInt(const GS::UniString& i_path, const GS::UniString& i_key, const UInt32 i_val, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
 	HKEY hKey = GetOrCreateRegPath(i_path, i_hKey);
 

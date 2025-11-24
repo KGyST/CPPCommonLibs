@@ -9,23 +9,23 @@
 
 const HKEY _HKEY = HKEY_CURRENT_USER;
 
-GS::UniString GetRegString(const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
+GS::UniString GetRegString(const GS::UniString& path, const GS::UniString& key, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
 
-GS::UniString GetRegStringOrDefault(const GS::UniString& i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
-
-//If key doesn't exist, creates it with the default value and then returns it:
-GS::UniString GetRegStringOrSetDefault(const GS::UniString& i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey = HKEY_CURRENT_USER, DWORD* o_bufSize = NULL);
-
-UInt32 GetRegInt(const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
-
-UInt32 GetRegIntOrDefault(const int i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
+GS::UniString GetRegStringOrDefault(const GS::UniString& path, const GS::UniString& key, const GS::UniString& defaultValue, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
 
 //If key doesn't exist, creates it with the default value and then returns it:
-UInt32 GetRegIntOrSetDefault(const int i_defaultValue, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hKey = HKEY_CURRENT_USER, DWORD* const o_bufSize = NULL);
+GS::UniString GetRegStringOrSetDefault(const GS::UniString& path, const GS::UniString& key, const GS::UniString& defaultValue, HKEY hKey = HKEY_CURRENT_USER, DWORD* bufSize = NULL);
 
-void SetRegString(const GS::UniString& i_val, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
+UInt32 GetRegInt(const GS::UniString& path, const GS::UniString& key, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
 
-void SetRegInt(const UInt32 i_val, const GS::UniString& i_key, const GS::UniString& i_path, HKEY i_hkey = _HKEY, DWORD * const o_bufSize = NULL);
+UInt32 GetRegIntOrDefault(const GS::UniString& path, const GS::UniString& key, const int defaultValue, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
+
+//If key doesn't exist, creates it with the default value and then returns it:
+UInt32 GetRegIntOrSetDefault(const GS::UniString& path, const GS::UniString& key, const int defaultValue, HKEY hKey = HKEY_CURRENT_USER, DWORD* const bufSize = NULL);
+
+void SetRegString(const GS::UniString& path, const GS::UniString& key, const GS::UniString& value, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
+
+void SetRegInt(const GS::UniString& path, const GS::UniString& key, const UInt32 value, HKEY hkey = _HKEY, DWORD * const bufSize = NULL);
 
 #endif //_WINREG_HPP
 
