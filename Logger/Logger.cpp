@@ -214,8 +214,9 @@ const GS::UniString Logevent::ToUniString() const
 
 Logger::Logger(const GS::UniString& i_compName, const GS::UniString& i_appName)
 	: m_regPath("SOFTWARE\\" + i_compName + "\\" + i_appName)
-	, m_loglevel(LogLev_DEBUG)
 {
+  m_loglevel = (Loglevel)GetRegIntOrSetDefault(m_regPath, "LogLevel", (UInt32)LogLev_DEBUG);
+
 	GS::UniString fileName = i_appName + GetTimeStr("%Y%m%d_%H%M%S") + GS::UniString(".log");
 
 	GS::UniString sLogFolder = GetRegString(m_regPath, GS::UniString("LogFileFolder"));
@@ -245,6 +246,8 @@ Logger::~Logger()
 	m_pLogFileFolder->ToPath(&_path);
 
 	SetRegString(_path, "LogFileFolder", m_regPath);
+
+  SetRegInt(m_regPath, "LogLevel", (UInt32)m_loglevel);
 }
 
 // =====================================================================================================================
