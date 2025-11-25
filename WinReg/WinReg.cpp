@@ -1,5 +1,6 @@
 #include	"WinReg.hpp"
 
+
 GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
 	char sBuffer[255];
@@ -23,9 +24,14 @@ GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_k
 
 GS::UniString GetRegStringOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
 {
-	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, o_bufSize);
+	DWORD iBufferSize = 255;
+
+	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, &iBufferSize);
 
 	if (o_bufSize != NULL)
+		*o_bufSize = iBufferSize;
+
+	if (iBufferSize != NULL)
 		return iResult;
 	else
 		return i_defaultValue;
@@ -33,9 +39,14 @@ GS::UniString GetRegStringOrDefault(const GS::UniString& i_path, const GS::UniSt
 
 GS::UniString GetRegStringOrSetDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* o_bufSize/* = NULL*/)
 {
-	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, o_bufSize);
+	DWORD iBufferSize = 255;
+
+	GS::UniString iResult = GetRegString(i_path, i_key, i_hKey, &iBufferSize);
 
 	if (o_bufSize != NULL)
+		*o_bufSize = iBufferSize;
+
+	if (iBufferSize != NULL)
 		return iResult;
 	else
 		SetRegString(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
@@ -59,14 +70,19 @@ UInt32 GetRegInt(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i
 	if (o_bufSize != NULL)
 		*o_bufSize = iBufferSize;
 
-	return UInt16(iBuffer);
+	return UInt32(iBuffer);
 }
 
 UInt32 GetRegIntOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
-	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, o_bufSize);
+	DWORD iBufferSize = 255;
+
+	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, &iBufferSize);
 
 	if (o_bufSize != NULL)
+		*o_bufSize = iBufferSize;
+
+	if (iBufferSize != NULL)
 		return iResult;
 	else
 		return i_defaultValue;
@@ -74,9 +90,14 @@ UInt32 GetRegIntOrDefault(const GS::UniString& i_path, const GS::UniString& i_ke
 
 UInt32 GetRegIntOrSetDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
 {
-	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, o_bufSize);
+	DWORD iBufferSize = 255;
+
+	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, &iBufferSize);
 
 	if (o_bufSize != NULL)
+		*o_bufSize = iBufferSize;
+
+	if (iBufferSize != NULL)
 		return iResult;
 	else
 		SetRegInt(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
