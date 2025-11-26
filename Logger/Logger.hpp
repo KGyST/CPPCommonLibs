@@ -9,6 +9,7 @@
 #include	"FileSystem.hpp"
 #include	"File.hpp"
 #include	<mutex>
+#include	<boost/format.hpp>
 
 
 // TODO To be removed
@@ -66,9 +67,12 @@ public:
 		const Loglevel i_logLevel,
 		const GSErrCode i_errCode = NoError,
 		const GS::Guid* const i_guid = nullptr
-	) {
-		return Log(i_sLogText, i_errCode, i_logLevel, i_guid);
-	}
+	) {return Log(i_sLogText, i_errCode, i_logLevel, i_guid);}
+	void Log(const boost::format& i_format,
+		const Loglevel i_logLevel = LogLev_DEBUG,
+		const GSErrCode i_errCode = NoError,
+		const GS::Guid* const i_guid = nullptr
+  ) {return Log(GS::UniString(str(i_format)), i_errCode, i_logLevel, i_guid);}
 	
 	// Getters / Setters
 	short GetLoglevel() const { return (short)m_loglevel; };
