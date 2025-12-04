@@ -1,6 +1,8 @@
 #ifndef _SETTINGS_SINGLETON_TEMPLATE_HPP
 #define _SETTINGS_SINGLETON_TEMPLATE_HPP
 
+#include	<mutex>
+
 #include	"../APIEnvir.h"
 #include	"ACAPinc.h"					// also includes APIdefs.h
 #include	"../APICommon.h"
@@ -9,10 +11,9 @@
 #include	"AC27.hpp"
 #endif
 
-#include	<mutex>
+#include  "PolygonReducer_Resource.h"
 #include	"Logger/Logger.hpp"
 #include	"Utils/Resource.hpp"
-#include  "../Src/PolygonReducer_Resource.h"
 
 
 template <class Derived>
