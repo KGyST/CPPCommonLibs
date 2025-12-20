@@ -1,7 +1,23 @@
 #include	"WinReg.hpp"
 
+HKEY _GetOrCreateRegPath(const GS::UniString& i_path, HKEY i_hKey/* = HKEY_CURRENT_USER*/)
+{
+	HKEY hKey;
+	LSTATUS status = RegCreateKeyExW(i_hKey,
+		(wchar_t*)(i_path.ToUStr().Get()),
+		0,
+		NULL,
+		REG_OPTION_NON_VOLATILE,
+		KEY_WRITE,
+		NULL,
+		&hKey,
+		NULL
+	);
 
-GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
+	return hKey;
+}
+
+GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* const o_bufSize/* = NULL*/)
 {
 	char sBuffer[255];
 	DWORD iBuffer = 255;
@@ -22,7 +38,7 @@ GS::UniString GetRegString(const GS::UniString& i_path, const GS::UniString& i_k
 	return GS::UniString(ws);
 }
 
-GS::UniString GetRegStringOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
+GS::UniString GetRegStringOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* o_bufSize/* = NULL*/)
 {
 	DWORD iBufferSize = 255;
 
@@ -51,115 +67,23 @@ GS::UniString GetRegStringOrSetDefault(const GS::UniString& i_path, const GS::Un
 	else
 		SetRegString(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
 
-		return i_defaultValue;
+	return i_defaultValue;
 }
 
-UInt32 GetRegInt(const GS::UniString& i_path, const GS::UniString& i_key, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * o_bufSize/* = NULL*/)
+void SetRegString(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_val, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD* const o_bufSize/* = NULL*/)
 {
-	DWORD iBuffer = 0;
-	DWORD iBufferSize = 255;
-
-	LSTATUS _ = RegGetValueW(i_hKey,
-		i_path.ToUStr().Get(),		/*L"SOFTWARE\\GRAPHISOFT\\ARCHICAD\\Archicad 26.0.0 INT R1\\Add-On Manager",*/
-		i_key.ToUStr().Get(),		/*L"Use Default Location",*/
-		RRF_RT_REG_DWORD,
-		NULL,
-		&iBuffer,
-		&iBufferSize);
-
-	if (o_bufSize != NULL)
-		*o_bufSize = iBufferSize;
-
-	return UInt32(iBuffer);
-}
-
-UInt32 GetRegIntOrDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
-{
-	DWORD iBufferSize = 255;
-
-	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, &iBufferSize);
-
-	if (o_bufSize != NULL)
-		*o_bufSize = iBufferSize;
-
-	if (iBufferSize != NULL)
-		return iResult;
-	else
-		return i_defaultValue;
-}
-
-UInt32 GetRegIntOrSetDefault(const GS::UniString& i_path, const GS::UniString& i_key, const int i_defaultValue, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
-{
-	DWORD iBufferSize = 255;
-
-	UInt32 iResult = GetRegInt(i_path, i_key, i_hKey, &iBufferSize);
-
-	if (o_bufSize != NULL)
-		*o_bufSize = iBufferSize;
-
-	if (iBufferSize != NULL)
-		return iResult;
-	else
-		SetRegInt(i_path, i_key, i_defaultValue, i_hKey, o_bufSize);
-
-		return i_defaultValue;
-}
-
-HKEY GetOrCreateRegPath(const GS::UniString& i_path, HKEY i_hKey = HKEY_CURRENT_USER)
-{
-	HKEY hKey;
-	LSTATUS status = RegCreateKeyExW(i_hKey,
-		(wchar_t*)(i_path.ToUStr().Get()),
-		0,
-		NULL,
-		REG_OPTION_NON_VOLATILE,
-		KEY_WRITE,
-		NULL,
-		&hKey,
-		NULL
-	);
-
-	return hKey;
-}
-
-void SetRegString(const GS::UniString& i_path, const GS::UniString& i_key, const GS::UniString& i_val, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
-{
-	HKEY hKey = GetOrCreateRegPath(i_path, i_hKey);
+	HKEY hKey = _GetOrCreateRegPath(i_path, i_hKey);
 
 	auto wVal = (wchar_t*)(i_val.ToUStr().Get());
 	auto key = (wchar_t*)(i_key.ToUStr().Get());
 
 	auto _b = (BYTE*)wVal;
-	auto _bs = (DWORD)(i_val.GetLength()*2);
+	auto _bs = (DWORD)(i_val.GetLength() * 2);
 
 	LSTATUS status = RegSetValueExW(hKey,
 		key,
 		0,
 		REG_SZ,
-		_b,
-		_bs);
-
-	if (o_bufSize != NULL)
-		*o_bufSize = _bs;
-
-	status = RegCloseKey(i_hKey);
-	status = RegCloseKey(hKey);
-}
-
-void SetRegInt(const GS::UniString& i_path, const GS::UniString& i_key, const UInt32 i_val, HKEY i_hKey/* = HKEY_CURRENT_USER*/, DWORD * const o_bufSize/* = NULL*/)
-{
-	HKEY hKey = GetOrCreateRegPath(i_path, i_hKey);
-
-	auto skey = (wchar_t*)(i_path.ToUStr().Get());
-	auto key = (wchar_t*)(i_key.ToUStr().Get());
-
-	auto _b = (const BYTE*)&i_val;
-	auto _bs = (DWORD)sizeof(i_val);
-
-	LSTATUS status = RegSetValueExW(hKey,
-		key,
-		0,
-		REG_DWORD,
 		_b,
 		_bs);
 

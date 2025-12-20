@@ -16,7 +16,7 @@
 #include	"Utils/Resource.hpp"
 
 
-template <class Derived>
+template <class T_Derived>
 class SettingsSingletonBase
 {
 	SettingsSingletonBase(const SettingsSingletonBase&) = delete;
@@ -36,9 +36,9 @@ protected:
 	GS::UniString GetRegPath() { return "SOFTWARE\\" + m_companyName + "\\" + m_appName;	}
 
 public:
-	static Derived& GetInstance() 
+	static T_Derived& GetInstance() 
 	{
-		static Derived singleton;
+		static T_Derived singleton;
 		return singleton;
 	}
 
